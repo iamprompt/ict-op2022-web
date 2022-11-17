@@ -1,5 +1,5 @@
-import type { I18nTranslation, IQuestion } from '~/const/activity/questions'
-import { QUESTIONS, QUESTION_TYPE } from '~/const/activity/questions'
+import type { I18nTranslation, IQuestion } from '../../../../const/activity/questions'
+import { QUESTIONS, QUESTION_TYPE } from '../../../../const/activity/questions'
 
 export const formatQuestion = (
   question: IQuestion<I18nTranslation>,
