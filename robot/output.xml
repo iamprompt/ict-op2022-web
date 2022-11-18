@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.0.1 (Python 3.9.13 on win32)" generated="20221118 20:51:12.960" rpa="false" schemaversion="3">
+<suite id="s1" name="Test" source="E:\ICT-y4\ict-op2022-web\robot\test.robot">
+<test id="s1-t1" name="Test opening google.co.th using Chrome" line="5">
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>http://localhost:4000</arg>
+<arg>chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20221118 20:51:13.115" level="INFO">Opening browser 'chrome' to base url 'http://localhost:4000'.</msg>
+<status status="PASS" starttime="20221118 20:51:13.114" endtime="20221118 20:51:15.966"/>
+</kw>
+<status status="PASS" starttime="20221118 20:51:13.114" endtime="20221118 20:51:15.966"/>
+</test>
+<status status="PASS" starttime="20221118 20:51:12.962" endtime="20221118 20:51:15.968"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="Test">Test</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
