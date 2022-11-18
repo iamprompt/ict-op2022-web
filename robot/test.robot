@@ -8,5 +8,5 @@ ${url_website}     http://localhost:4000
 
 
 ***Test Cases ***
-Test opening google.co.th using Chrome
-    Open Browser    http://localhost:4000    chrome
+Test  
+    Open Browser    ${url_website}/register    ${browser}

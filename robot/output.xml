@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 6.0.1 (Python 3.9.13 on win32)" generated="20221118 20:51:12.960" rpa="false" schemaversion="3">
+<robot generator="Robot 6.0.1 (Python 3.9.13 on win32)" generated="20221118 21:03:22.692" rpa="false" schemaversion="3">
 <suite id="s1" name="Test" source="E:\ICT-y4\ict-op2022-web\robot\test.robot">
-<test id="s1-t1" name="Test opening google.co.th using Chrome" line="5">
+<test id="s1-t1" name="Test opening google.co.th using Chrome" line="11">
 <kw name="Open Browser" library="SeleniumLibrary">
-<arg>http://localhost:4000</arg>
+<arg>${url_website}/register</arg>
 <arg>chrome</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20221118 20:51:13.115" level="INFO">Opening browser 'chrome' to base url 'http://localhost:4000'.</msg>
-<status status="PASS" starttime="20221118 20:51:13.114" endtime="20221118 20:51:15.966"/>
+<msg timestamp="20221118 21:03:22.857" level="INFO">Opening browser 'chrome' to base url 'http://localhost:4000/register'.</msg>
+<status status="PASS" starttime="20221118 21:03:22.856" endtime="20221118 21:03:25.706"/>
 </kw>
-<status status="PASS" starttime="20221118 20:51:13.114" endtime="20221118 20:51:15.966"/>
+<status status="PASS" starttime="20221118 21:03:22.855" endtime="20221118 21:03:25.706"/>
 </test>
-<status status="PASS" starttime="20221118 20:51:12.962" endtime="20221118 20:51:15.968"/>
+<kw name="Close Browser" library="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" starttime="20221118 21:03:25.708" endtime="20221118 21:03:27.807"/>
+</kw>
+<status status="PASS" starttime="20221118 21:03:22.693" endtime="20221118 21:03:27.807"/>
 </suite>
 <statistics>
 <total>
