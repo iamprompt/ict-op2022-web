@@ -1,4 +1,4 @@
-import Participant from '~/modules/mongoose/models/participant.model'
+import Participant from 'src/modules/mongoose/models/participant.model'
 
 export const getUserRecordFromLineUId = async (
   uId: string,

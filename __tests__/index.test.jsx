@@ -1,9 +1,14 @@
-import { render, screen } from '@testing-library/react'
+// created by @itsmebabysmiley
 import '@testing-library/jest-dom'
 
 import { checkAnswer } from 'src/modules/api/services/activity/checkAnswer'
-import { getQuestQuestion, formatQuestion } from 'src/modules/api/services/activity/getQuestQuestion'
-import { QUESTIONS, QUESTION_TYPE } from '../src/const/activity/questions'
+import { getQuestQuestion } from 'src/modules/api/services/activity/getQuestQuestion'
+import {getLineUserFromReq} from 'src/modules/api/services/common/getLineUserFromReq'
+
+jest.mock('src/modules/external/line')
+import {getLineUserFromIdToken} from 'src/modules/external/line'
+// import {getUserRecordFromLineUId} from 'src/modules/api/services/common/getUserRecordFromLine'
+
 describe('register-unit-tests.ts', () => {
 
   /**
@@ -34,19 +39,19 @@ describe('register-unit-tests.ts', () => {
    *  - question
    *  - expectedAnswer
    * 
-   * In this testcase, we combined ISP and logic coverage technique to acheive 75% coverage.
+   * In this testcase, we combined ISP and graph coverage technique to acheive 75% coverage.
    *
    */
   it('testGetQuestQuestion', async () => {
-    let expectedOutput = [{
+
+    expect(await getQuestQuestion(2, 'th', true, true)).toMatchObject([{
       id: 'Q1',
       type: 'TEXT_FIELD',
       questNo: 2,
       questTitle: 'Meet & Greet Zone',
       question: 'จำนวนชมรม (Club) ที่จัดแสดงมีกี่ชมรม', expectedAnswer:
         ['4', 'four', 'สี่', '4 ชมรม', '4 clubs', 'four clubs', '4 club', 'four club',]
-    }];
-    expect(await getQuestQuestion(2, 'th', true, true)).toMatchObject(expectedOutput)
+    }])
 
     try {
       await getQuestQuestion(6, 'th', true, true)
@@ -60,7 +65,7 @@ describe('register-unit-tests.ts', () => {
       expect(e.message).toBe("Question not found");
     }
 
-    expectedOutput = [{
+    expect(await getQuestQuestion(2, 'en', true, true)).toMatchObject([{
       id: 'Q1',
       type: 'TEXT_FIELD',
       questNo: 2,
@@ -68,11 +73,9 @@ describe('register-unit-tests.ts', () => {
       question: 'How many clubs do we have for the open house?',
       expectedAnswer:
         ['4', 'four', 'สี่', '4 ชมรม', '4 clubs', 'four clubs', '4 club', 'four club',]
-    }];
+    }])
 
-    expect(await getQuestQuestion(2, 'en', true, true)).toMatchObject(expectedOutput)
-
-    expectedOutput = [{
+    expect(await getQuestQuestion(2, 'jp', true, true)).toMatchObject([{
       id: 'Q1',
       type: 'TEXT_FIELD',
       questNo: 2,
@@ -80,93 +83,123 @@ describe('register-unit-tests.ts', () => {
       question: undefined,
       expectedAnswer:
         ['4', 'four', 'สี่', '4 ชมรม', '4 clubs', 'four clubs', '4 club', 'four club',]
-    }];
+    }])
 
-    expect(await getQuestQuestion(2, 'jp', true, true)).toMatchObject(expectedOutput)
-
-    expectedOutput = [{
+    expect(await getQuestQuestion(2, 'th', true, false)).toMatchObject([{
       id: 'Q1',
       type: 'TEXT_FIELD',
       questNo: 2,
       questTitle: 'Meet & Greet Zone',
       question: 'จำนวนชมรม (Club) ที่จัดแสดงมีกี่ชมรม',
-    }];
+    }])
 
-    expect(await getQuestQuestion(2, 'th', true, false)).toMatchObject(expectedOutput)
-
-    expectedOutput = [{
+    expect(await getQuestQuestion(2, 'th', false, true)).toMatchObject([{
       id: 'Q1',
       type: 'TEXT_FIELD',
       questNo: 2,
       questTitle: 'Meet & Greet Zone',
       expectedAnswer:
         ['4', 'four', 'สี่', '4 ชมรม', '4 clubs', 'four clubs', '4 club', 'four club',]
-    }];
+    }])
 
-    expect(await getQuestQuestion(2, 'th', false, true)).toMatchObject(expectedOutput)
-
-    expectedOutput = [
-      {
-        id: 'Q5',
-        type: 'MULTIPLE_CHOICE',
-        questNo: 5,
-        questTitle: 'Innovative Projects Zone',
-        choices: {
-          'v-achilles': 'V-Achilles',
-          mosquito: 'Mosquito',
-          'vr-xylophone': 'VR Xylophone',
-          midjourney: 'Midjourney',
-          psimilan: 'PSIMILAN',
-          'food-spoilage': 'Food Spoilage',
-          airadar: 'Airadar',
-          'dall-e': 'DALL-E',
-          'web-audit-tool': 'Web Audit Tool',
-          microusity: 'Microusity',
-          'mu-blink-analyzer': 'MU Blink Analyzer',
-          tpt: 'TPT',
-          'receipt-recognizer': 'Receipt Recognizer',
-          isit: 'iSit',
-          'suture-bot': 'Suture Bot',
-          'cof-learn': 'Cof-Learn',
-          ocr: 'OCR',
-          wabiqa: 'WabiQA',
-          ezfit: 'EzFIT',
-          'fixme-bot': 'FixMe Bot',
-          mirai: 'Mirai',
-          'smart-color': 'Smart Color',
-          esit: 'eSit',
-          landsage: 'LandSage',
-          automl: 'AutoML',
-          orchidator: 'Orchidator',
-          'github-autopilot': 'Github Autopilot',
-          'self-driving-car': 'Self-driving car',
-          gaifa: 'GAIFA',
-          'stable-diffusion': 'Stable Diffusion',
-          'air-quality-monitoring': 'Air Quality Monitoring',
-          whitedefender: 'WhiteDefender'
-        }
+    expect(await getQuestQuestion(5, 'th', false, false)).toMatchObject([{
+      id: 'Q5',
+      type: 'MULTIPLE_CHOICE',
+      questNo: 5,
+      questTitle: 'Innovative Projects Zone',
+      choices: {
+        'v-achilles': 'V-Achilles',
+        mosquito: 'Mosquito',
+        'vr-xylophone': 'VR Xylophone',
+        midjourney: 'Midjourney',
+        psimilan: 'PSIMILAN',
+        'food-spoilage': 'Food Spoilage',
+        airadar: 'Airadar',
+        'dall-e': 'DALL-E',
+        'web-audit-tool': 'Web Audit Tool',
+        microusity: 'Microusity',
+        'mu-blink-analyzer': 'MU Blink Analyzer',
+        tpt: 'TPT',
+        'receipt-recognizer': 'Receipt Recognizer',
+        isit: 'iSit',
+        'suture-bot': 'Suture Bot',
+        'cof-learn': 'Cof-Learn',
+        ocr: 'OCR',
+        wabiqa: 'WabiQA',
+        ezfit: 'EzFIT',
+        'fixme-bot': 'FixMe Bot',
+        mirai: 'Mirai',
+        'smart-color': 'Smart Color',
+        esit: 'eSit',
+        landsage: 'LandSage',
+        automl: 'AutoML',
+        orchidator: 'Orchidator',
+        'github-autopilot': 'Github Autopilot',
+        'self-driving-car': 'Self-driving car',
+        gaifa: 'GAIFA',
+        'stable-diffusion': 'Stable Diffusion',
+        'air-quality-monitoring': 'Air Quality Monitoring',
+        whitedefender: 'WhiteDefender'
       }
-    ]
+    }]);
 
-    expect(await getQuestQuestion(5, 'th', false, false)).toMatchObject(expectedOutput);
-
-    expectedOutput = [
-      {
-        id: 'Q2',
-        type: 'TEXT_FIELD',
-        questNo: 3,
-        questTitle: 'International Experiences Zone',
-        question: 'ประเทศที่มีจำนวน Exchange Students มากที่สุดคือประเทศใด'
-      }
-    ]
-    
-    expect(await getQuestQuestion(3)).toMatchObject(expectedOutput);
+    expect(await getQuestQuestion(3)).toMatchObject([{
+      id: 'Q2',
+      type: 'TEXT_FIELD',
+      questNo: 3,
+      questTitle: 'International Experiences Zone',
+      question: 'ประเทศที่มีจำนวน Exchange Students มากที่สุดคือประเทศใด'
+    }]);
 
 
   })
 
-  it('unit test3', async () => {
+  /**
+   * Test get line user from requets.
+   * getLineUserFromReq(NextApiRequest) will get Line user information by using token from header
+   * If token is valid, it will return
+   *  - userId
+   *  - displayName
+   *  - picture
+   *  - email
+   * Otherwise, it will throw an error.
+   * 
+   * In this test, we apply graph technique, since this function contains only 1 condition. 
+   */
+  it('testGetLineUserFromReq', async () => {
+    let req = {
+      headers : {
+        authorization: 'idk imokay'
+      }
+    }
+    //mock getLineUserFromIdToken because we didn't want to test this function.
+    getLineUserFromIdToken.mockReturnValue({
+      userId: 1234,
+      displayName: "mairu",
+      picture: "src/public/image.png",
+      email: "mairu@gmail.com",
+    })
 
+    expect(await getLineUserFromReq(req)).toMatchObject({
+      userId: 1234,
+      displayName: "mairu",
+      picture: "src/public/image.png",
+      email: "mairu@gmail.com",
+    })
+    
+    req = {
+      headers : {
+        authorization: 'Basic'
+      }
+    }
+    try {
+      await getLineUserFromReq(req)
+    } catch (e) {
+      expect(e.message).toBe('No LINE Id token provided')
+    }
+    
+    
   });
 })
+
 export { };
