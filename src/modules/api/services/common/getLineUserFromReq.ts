@@ -1,5 +1,5 @@
 import type { NextApiRequest } from 'next'
-import { getLineUserFromIdToken } from '~/modules/external/line'
+import { getLineUserFromIdToken } from 'src/modules/external/line'
 
 export const getLineUserFromReq = async (req: NextApiRequest) => {
   const token = req.headers.authorization?.split(' ')[1]

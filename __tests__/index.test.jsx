@@ -1,9 +1,14 @@
-import { render, screen } from '@testing-library/react'
+// created by @itsmebabysmiley
 import '@testing-library/jest-dom'
 
 import { checkAnswer } from 'src/modules/api/services/activity/checkAnswer'
-import { getQuestQuestion, formatQuestion } from 'src/modules/api/services/activity/getQuestQuestion'
-import { QUESTIONS, QUESTION_TYPE } from '../src/const/activity/questions'
+import { getQuestQuestion } from 'src/modules/api/services/activity/getQuestQuestion'
+import {getLineUserFromReq} from 'src/modules/api/services/common/getLineUserFromReq'
+
+jest.mock('src/modules/external/line')
+import {getLineUserFromIdToken} from 'src/modules/external/line'
+// import {getUserRecordFromLineUId} from 'src/modules/api/services/common/getUserRecordFromLine'
+
 describe('register-unit-tests.ts', () => {
 
   /**
@@ -34,7 +39,7 @@ describe('register-unit-tests.ts', () => {
    *  - question
    *  - expectedAnswer
    * 
-   * In this testcase, we combined ISP and logic coverage technique to acheive 75% coverage.
+   * In this testcase, we combined ISP and graph coverage technique to acheive 75% coverage.
    *
    */
   it('testGetQuestQuestion', async () => {
@@ -165,8 +170,51 @@ describe('register-unit-tests.ts', () => {
 
   })
 
-  it('unit test3', async () => {
+  /**
+   * Test get line user from requets.
+   * getLineUserFromReq(NextApiRequest) will get Line user information by using token from header
+   * If token is valid, it will return
+   *  - userId
+   *  - displayName
+   *  - picture
+   *  - email
+   * Otherwise, it will throw an error.
+   * 
+   * In this test, we apply graph technique, since this function contains only 1 condition. 
+   */
+  it('testGetLineUserFromReq', async () => {
+    let req = {
+      headers : {
+        authorization: 'idk imokay'
+      }
+    }
+    //mock getLineUserFromIdToken because we didn't want to test this function.
+    getLineUserFromIdToken.mockReturnValue({
+      userId: 1234,
+      displayName: "mairu",
+      picture: "src/public/image.png",
+      email: "mairu@gmail.com",
+    })
 
+    expect(await getLineUserFromReq(req)).toMatchObject({
+      userId: 1234,
+      displayName: "mairu",
+      picture: "src/public/image.png",
+      email: "mairu@gmail.com",
+    })
+    
+    req = {
+      headers : {
+        authorization: 'Basic'
+      }
+    }
+    try {
+      await getLineUserFromReq(req)
+    } catch (e) {
+      expect(e.message).toBe('No LINE Id token provided')
+    }
+    
+    
   });
 })
 export { };
